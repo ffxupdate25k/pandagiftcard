@@ -1,14 +1,12 @@
-//=========================
-// ADMIN PANEL
-//=========================
+// =========================
+// PANDA BIRTHDAY ADMIN
+// =========================
 
 const ADMIN_PASSWORD = "wolf123";
-const KEY = "PANDA_ADMIN";
+const STORAGE_KEY = "PANDA_ADMIN";
 
-// Default Settings
-let data = JSON.parse(localStorage.getItem(KEY)) || {
-
-  girlName: "Muinat aka Panda Sha",
+const DEFAULT = {
+  girlName: "Panda ",
   music: "",
 
   geoToken: "",
@@ -19,8 +17,8 @@ let data = JSON.parse(localStorage.getItem(KEY)) || {
   airtimeAmount: 200,
 
   flutterKey: "",
-
   bankName: "",
+  bankCode: "",
   accountNumber: "",
   accountName: "",
   cashAmount: 10000,
@@ -28,10 +26,13 @@ let data = JSON.parse(localStorage.getItem(KEY)) || {
   claimed: false
 };
 
-//=========================
-// LOGIN
-//=========================
+let data =
+  JSON.parse(localStorage.getItem(STORAGE_KEY)) ||
+  DEFAULT;
 
+// =========================
+// LOGIN
+// =========================
 function login(){
 
   if(password.value !== ADMIN_PASSWORD){
@@ -39,141 +40,156 @@ function login(){
     return;
   }
 
-  loginPage.style.display="none";
-  adminPage.style.display="block";
+  loginPage.style.display = "none";
+  adminPage.style.display = "block";
 
   loadSettings();
-
 }
 
 function logout(){
   location.reload();
 }
 
-//=========================
-// LOAD
-//=========================
-
+// =========================
+// LOAD SETTINGS
+// =========================
 function loadSettings(){
 
-girlName.value=data.girlName;
-music.value=data.music;
+  girlName.value = data.girlName;
+  music.value = data.music;
 
-geoToken.value=data.geoToken;
-geoEndpoint.value=data.geoEndpoint;
-networkId.value=data.networkId;
+  geoToken.value = data.geoToken;
+  geoEndpoint.value = data.geoEndpoint;
+  networkId.value = data.networkId;
 
-airtimePhone.value=data.airtimePhone;
-airtimeAmount.value=data.airtimeAmount;
+  airtimePhone.value = data.airtimePhone;
+  airtimeAmount.value = data.airtimeAmount;
 
-flutterKey.value=data.flutterKey;
+  flutterKey.value = data.flutterKey;
 
-bankName.value=data.bankName;
-accountNumber.value=data.accountNumber;
-cashAmount.value=data.cashAmount;
+  bankName.value = data.bankName;
+  bankCode.value = data.bankCode;
+  accountNumber.value = data.accountNumber;
+  cashAmount.value = data.cashAmount;
 
-accountName.innerHTML=data.accountName || "Not Verified";
+  accountName.innerHTML =
+    data.accountName || "Not Verified";
 
-status.innerHTML=data.claimed ?
-"✅ Gifts Already Claimed":
-"🎁 Waiting For Claim";
-
+  status.innerHTML = data.claimed
+    ? "✅ Gifts Already Claimed"
+    : "🎁 Waiting For Claim";
 }
 
-//=========================
-// SAVE
-//=========================
-
+// =========================
+// SAVE SETTINGS
+// =========================
 function saveSettings(){
 
-data.girlName=girlName.value;
-data.music=music.value;
+  data.girlName = girlName.value;
+  data.music = music.value;
 
-data.geoToken=geoToken.value;
-data.geoEndpoint=geoEndpoint.value;
-data.networkId=networkId.value;
+  data.geoToken = geoToken.value;
+  data.geoEndpoint = geoEndpoint.value;
+  data.networkId = networkId.value;
 
-data.airtimePhone=airtimePhone.value;
-data.airtimeAmount=Number(airtimeAmount.value);
+  data.airtimePhone = airtimePhone.value;
+  data.airtimeAmount = Number(airtimeAmount.value);
 
-data.flutterKey=flutterKey.value;
+  data.flutterKey = flutterKey.value;
 
-data.bankName=bankName.value;
-data.accountNumber=accountNumber.value;
-data.cashAmount=Number(cashAmount.value);
-
-localStorage.setItem(KEY,JSON.stringify(data));
-
-alert("Saved Successfully 💗");
-
-}
-
-//=========================
-// VERIFY ACCOUNT
-// Flutterwave later
-//=========================
-
-async function verifyAccount(){
-
-if(accountNumber.value.length!=10){
-alert("Invalid Account Number");
-return;
-}
-
-// Temporary
-data.accountName="ACCOUNT VERIFIED";
-accountName.innerHTML="✅ "+data.accountName;
-
-localStorage.setItem(KEY,JSON.stringify(data));
-
-}
-
-//=========================
-// RESET CLAIMS
-//=========================
-
-function resetClaims(){
-
-data.claimed=false;
-
-localStorage.setItem(KEY,JSON.stringify(data));
-
-status.innerHTML="🎁 Waiting For Claim";
-
-alert("Claims Reset");
-
-}
   data.bankName = bankName.value;
+  data.bankCode = bankCode.value;
   data.accountNumber = accountNumber.value;
   data.cashAmount = Number(cashAmount.value);
 
-  localStorage.setItem(KEY, JSON.stringify(data));
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(data)
+  );
 
-  alert("Settings Saved Successfully 💗");
+  alert("Saved Successfully 💗");
 }
 
-// ---------- VERIFY ACCOUNT ----------
-// Replace with Flutterwave API later
-function verifyAccount() {
+// =========================
+// VERIFY ACCOUNT
+// =========================
+async function verifyAccount(){
 
-  if (accountNumber.value.length != 10) {
-    alert("Invalid Account Number");
+  if(accountNumber.value.length !== 10){
+    alert("Enter a valid account number");
     return;
   }
 
-  // Demo verification
-  data.accountName = "MUINAT PANDA SHA";
-  accountName.innerHTML = "✅ " + data.accountName;
+  if(bankCode.value === ""){
+    alert("Enter bank code");
+    return;
+  }
+
+  const btn = event.target;
+
+  btn.disabled = true;
+  btn.innerHTML = "Verifying...";
+
+  try{
+
+    const res = await fetch("api/verify.php",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        secretKey:flutterKey.value,
+        accountNumber:accountNumber.value,
+        bankCode:bankCode.value
+      })
+    });
+
+    const result = await res.json();
+
+    if(result.status === "success"){
+
+      data.accountName =
+        result.data.account_name;
+
+      accountName.innerHTML =
+        "✅ " + result.data.account_name;
+
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(data)
+      );
+
+    }else{
+
+      alert(result.message || "Verification Failed");
+
+    }
+
+  }catch(err){
+
+    alert("Network Error");
+
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = "Verify Account";
+
 }
 
-// ---------- RESET CLAIMS ----------
-function resetClaims() {
+// =========================
+// RESET CLAIMS
+// =========================
+function resetClaims(){
 
   data.claimed = false;
 
-  localStorage.setItem(KEY, JSON.stringify(data));
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(data)
+  );
 
   status.innerHTML = "🎁 Waiting For Claim";
 
   alert("Claims Reset Successfully");
-    }
+
+}
