@@ -1,7 +1,191 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Happy Birthday Muinat 💗</title><link rel="stylesheet" href="style.css"></head><body><div class="floaters">💗 🎀 💕 ✨ 🎈 💖</div><main>
-<section id="home" class="screen active"><p>A little surprise for you 💕</p><h1>Happy Birthday</h1><h2> Panda 🐼</h2><p>I made something special just for you...</p><div class="gift" id="gift">🎁</div><button id="tap">💗 TAP ME 💗</button></section>
-<section id="letter" class="screen"><div class="envelope">💌</div><article><h2>For My Panda 💗</h2><p>Happy Birthday, my love.</p><p>Even though I can't be beside you today, I want you to know that my heart is right there celebrating with you.</p><p>I pray this new age brings you happiness, peace, success, beautiful memories and everything your heart desires.</p><p>Thank you for being someone so special to me. Keep smiling, keep shining, and never forget how loved you are. ❤️</p><p>Enjoy every moment of your day. You deserve it all.</p><p class="sig">Forever yours,<br><b>Wolf 🐺</b><br><i>#Panda Lover#</i></p><button id="next1">Claim Next Gift 💝</button></article></section>
-<section id="gift1" class="screen"><article><div class="gift">🎁</div><p>Your next surprise is waiting...</p><h2>Birthday Gift #2</h2><div class="hiddenbox">🎀 Gift details are hidden 🎀</div><button id="claimA">Claim Gift 💗</button><div id="aResult"></div></article></section>
-<section id="gift2" class="screen"><article><div class="gift">🎁</div><p>One more surprise...</p><h2>Birthday Gift #3</h2><div class="hiddenbox">✨ Gift details are hidden ✨</div><button id="claimC">Claim Gift 💗</button><div id="cResult"></div></article></section>
-<section id="done" class="screen"><article><div class="heart">💗</div><h1>All Your Birthday Gifts Are Yours!</h1><p>Congratulations, Muinat aka Panda Sha 🐼</p><p>All your birthday presents have been gifted to you by</p><h2>Wolf 🐺</h2><p><b>Congratulations and enjoy your day to the fullest.</b></p><p class="love">I love you ✌️❤️</p></article></section>
-<section id="over" class="screen"><article><div class="heart">🎀</div><h1>Birthday Present Claims Are Over</h1><p>Your birthday presents have already been claimed.</p></article></section></main><audio id="music" loop><source src="assets/birthday-chime.mp3" type="audio/mpeg"></audio><script src="config.js"></script><script src="script.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Happy Birthday ❤️</title>
+<link rel="stylesheet" href="style.css">
+<script src="config.js"></script>
+</head>
+<body>
+
+<!-- Background Music -->
+<audio id="bgMusic" autoplay loop></audio>
+
+<!-- Floating Hearts -->
+<div class="hearts"></div>
+
+<!-- ================= HOME ================= -->
+<section id="home" class="page">
+
+  <h3>🎉 HAPPY BIRTHDAY 🎉</h3>
+
+  <h1 class="girlName">Muinat</h1>
+
+  <p>
+    Today is all about you 💕
+  </p>
+
+  <div class="giftBox" onclick="openLetter()">
+    🎁
+  </div>
+
+  <button class="tapBtn" onclick="openLetter()">
+    💗 TAP ME 💗
+  </button>
+
+</section>
+
+<!-- ================= LETTER ================= -->
+<section id="letter" class="page" style="display:none">
+
+  <div class="envelope">
+    💌
+  </div>
+
+  <div class="letterCard">
+
+    <h2>To My Panda Sha ❤️</h2>
+
+    <p>
+      Happy Birthday, my love.
+    </p>
+
+    <p>
+      Even though I can't be with you today,
+      my heart is celebrating every second with you.
+    </p>
+
+    <p>
+      I pray this new age brings you endless joy,
+      peace, success and everything your beautiful heart desires.
+    </p>
+
+    <p>
+      Thank you for being my happiness.
+      Never forget that you are deeply loved.
+    </p>
+
+    <h3>
+      — Wolf 🐺
+    </h3>
+
+    <small>#Panda Lover#</small>
+
+    <button onclick="showGift1()">
+      Claim Next Gift 🎀
+    </button>
+
+  </div>
+
+</section>
+
+<!-- ================= GIFT 1 ================= -->
+<section id="gift1" class="page" style="display:none">
+
+  <h2>🎁 Birthday Gift</h2>
+
+  <!-- Hidden Until Claim -->
+  <div id="airHidden">
+
+    <div class="mystery">
+      🎁
+    </div>
+
+    <p>Gift Details Hidden</p>
+
+    <button id="claimAirBtn" onclick="claimAirtime()">
+      Claim Gift 💗
+    </button>
+
+  </div>
+
+  <!-- Success -->
+  <div id="airSuccess" style="display:none">
+
+    <img src="mtn.png" class="logo">
+
+    <h2>Gift Successfully Claimed</h2>
+
+    <h1 id="airAmount"></h1>
+
+    <p id="airNumber"></p>
+
+    <button onclick="nextGift()">
+      Proceed To Next Gift
+    </button>
+
+  </div>
+
+</section>
+
+<!-- ================= GIFT 2 ================= -->
+<section id="gift2" class="page" style="display:none">
+
+  <h2>🎀 Final Birthday Gift</h2>
+
+  <div id="cashHidden">
+
+    <div class="mystery">
+      🎁
+    </div>
+
+    <p>Gift Details Hidden</p>
+
+    <button onclick="claimCash()">
+      Claim Gift ❤️
+    </button>
+
+  </div>
+
+  <div id="cashSuccess" style="display:none">
+
+    <h2>Money Successfully Sent</h2>
+
+    <h1 id="cashAmount"></h1>
+
+    <p id="cashName"></p>
+
+    <p id="cashBank"></p>
+
+    <button onclick="finishBirthday()">
+      Finish Surprise 🎉
+    </button>
+
+  </div>
+
+</section>
+
+<!-- ================= FINAL ================= -->
+<section id="final" class="page" style="display:none">
+
+  <div class="loveHeart">
+    💖
+  </div>
+
+  <h1>Congratulations</h1>
+
+  <h2 class="girlName"></h2>
+
+  <p>
+    You have successfully claimed
+    all your birthday presents
+    gifted to you by
+  </p>
+
+  <h2>Wolf 🐺</h2>
+
+  <h3>
+    Enjoy Your Day Till The Fullest ❤️
+  </h3>
+
+  <p>
+    I LOVE YOU ✌️
+  </p>
+
+</section>
+
+<script src="script.js"></script>
+
+</body>
+  </html>
