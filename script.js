@@ -1,3 +1,155 @@
-const $=x=>document.getElementById(x), ids=['home','letter','gift1','gift2','done','over'];const key='pandaBirthdayClaims_v1';const get=()=>JSON.parse(localStorage.getItem(key)||'{}');const save=x=>localStorage.setItem(key,JSON.stringify(x));function show(x){ids.forEach(i=>$(i).classList.remove('active'));$(x).classList.add('active');scrollTo(0,0)}
-const music=$('music');document.addEventListener('click',()=>music.play().catch(()=>{}),{once:true});$('tap').onclick=()=>{let c=get();c.letter=1;save(c);show('letter')};$('gift').onclick=()=>$('tap').click();$('next1').onclick=()=>show('gift1');
-async function claim(type){let c=get(),btn=type==='airtime'?$('claimA'):$('claimC'),endpoint=type==='airtime'?CONFIG.airtimeEndpoint:CONFIG.cashEndpoint,result=type==='airtime'?$('aResult'):$('cResult');btn.disabled=true;btn.textContent='Processing... 💗';try{let r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type})});let d=await r.json();if(!r.ok||!d.success)throw Error();c[type]=1;save(c);btn.style.display='none';if(type==='airtime'){result.innerHTML='<h3>✅ Successfully Claimed</h3><p>Gift sent successfully.</p><button onclick="show(\'gift2\')">Proceed to Next Claim 💝</button>'}else{result.innerHTML='<h3>✅ Successfully Claimed</h3><p>'+((d.accountName||CONFIG.accountName))+'<br>'+((d.bankName||CONFIG.bankName))+'<br>₦'+Number(d.amount||CONFIG.cashAmount).toLocaleString()+'</p><button onclick="show(\'done\')">Finish Birthday Surprise 🎉</button>'}}catch(e){btn.disabled=false;btn.textContent='Claim Gift 💗';alert('The gift could not be sent yet. Please try again.')}}$('claimA').onclick=()=>claim('airtime');$('claimC').onclick=()=>claim('cash');(function(){let c=get();if(c.cash)show('over');else if(c.airtime)show('gift2');else if(c.letter)show('letter')})();
+//============================
+// BIRTHDAY WEBSITE
+//============================
+
+const CLAIM_KEY = "PANDA_ADMIN";
+
+// Load Admin Settings
+let settings = JSON.parse(localStorage.getItem(CLAIM_KEY)) || {};
+
+// Set girl's name
+document.querySelectorAll(".girlName").forEach(e=>{
+e.innerHTML=settings.girlName || "Muinat aka Panda Sha";
+});
+
+// Music
+const music=document.getElementById("bgMusic");
+if(music && settings.music){
+music.src=settings.music;
+}
+
+// Screens
+function openLetter(){
+document.getElementById("home").style.display="none";
+document.getElementById("letter").style.display="block";
+}
+
+//============================
+// GIFT 1
+// Airtime
+//============================
+
+async function claimAirtime(){
+
+const btn=document.getElementById("claimAirBtn");
+
+btn.disabled=true;
+btn.innerHTML="Sending...";
+
+const body={
+network:Number(settings.networkId),
+amount:Number(settings.airtimeAmount),
+mobile_number:settings.airtimePhone,
+Ported_number:true,
+airtime_type:"VTU"
+};
+
+try{
+
+const res=await fetch(settings.geoEndpoint,{
+method:"POST",
+headers:{
+"Authorization":"Token "+settings.geoToken,
+"Content-Type":"application/json"
+},
+body:JSON.stringify(body)
+});
+
+const data=await res.json();
+
+if(res.ok){
+
+document.getElementById("airHidden").style.display="none";
+
+document.getElementById("airSuccess").style.display="block";
+
+document.getElementById("airAmount").innerHTML=
+"₦"+settings.airtimeAmount;
+
+document.getElementById("airNumber").innerHTML=
+settings.airtimePhone;
+
+settings.airClaimed=true;
+
+localStorage.setItem(CLAIM_KEY,
+JSON.stringify(settings));
+
+}else{
+
+alert(data.message || "Airtime Failed");
+
+btn.disabled=false;
+btn.innerHTML="Claim Gift";
+
+}
+
+}catch(e){
+
+alert("Network Error");
+
+btn.disabled=false;
+btn.innerHTML="Claim Gift";
+
+}
+
+}
+
+//============================
+// NEXT GIFT
+//============================
+
+function nextGift(){
+
+document.getElementById("gift1").style.display="none";
+
+document.getElementById("gift2").style.display="block";
+
+}
+
+//============================
+// CASH
+// Flutterwave Later
+//============================
+
+function claimCash(){
+
+document.getElementById("cashHidden").style.display="none";
+
+document.getElementById("cashSuccess").style.display="block";
+
+document.getElementById("cashAmount").innerHTML=
+"₦"+settings.cashAmount;
+
+document.getElementById("cashBank").innerHTML=
+settings.bankName;
+
+document.getElementById("cashName").innerHTML=
+settings.accountName;
+
+settings.cashClaimed=true;
+settings.claimed=true;
+
+localStorage.setItem(CLAIM_KEY,
+JSON.stringify(settings));
+
+}
+
+//============================
+// CHECK CLAIM
+//============================
+
+window.onload=()=>{
+
+if(settings.claimed){
+
+document.body.innerHTML=
+`
+<div class="claimed">
+<h1>🎀 Birthday Present Claims Are Over</h1>
+<p>All birthday presents have already been claimed.</p>
+</div>
+`;
+
+}
+
+};
