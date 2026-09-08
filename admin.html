@@ -1,88 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Admin Panel</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Wolf Admin Panel</title>
 <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
 <div id="loginPage" class="center">
-
   <div class="card">
-    <h1>💗 Admin Panel</h1>
-    <p>Wolf Only</p>
+    <h1>💗 Wolf Admin</h1>
 
-    <input type="password" id="password" placeholder="Enter Admin Password">
+    <input type="password" id="password" placeholder="Admin Password">
 
-    <button onclick="login()">Login</button>
+    <button onclick="login()">LOGIN</button>
   </div>
-
 </div>
 
-<div id="adminPage" style="display:none">
+<div id="adminPage" style="display:none;">
 
-  <header>
-    <h2>🎀 Panda Birthday Admin</h2>
-    <button onclick="logout()">Logout</button>
-  </header>
+<header>
+  <h2>🎀 Panda Birthday Admin</h2>
+  <button onclick="logout()">Logout</button>
+</header>
 
-  <div class="container">
+<div class="container">
 
-    <div class="box">
-      <h3>👧 Recipient</h3>
+  <div class="box">
+    <h3>👸 Birthday Girl</h3>
 
-      <label>Name</label>
-      <input id="girlName">
+    <label>Name</label>
+    <input id="girlName">
 
-      <label>Birthday Music URL</label>
-      <input id="music">
-    </div>
+    <label>Music URL</label>
+    <input id="music">
+  </div>
 
-    <div class="box">
-      <h3>📱 Airtime Gift</h3>
+  <div class="box">
+    <h3>📱 Airtime Gift</h3>
 
-      <label>Amount</label>
-      <input id="airtimeAmount" type="number">
+    <label>Geodnatech API Token</label>
+    <input id="geoToken">
 
-      <label>Phone Number</label>
-      <input id="airtimePhone">
-    </div>
+    <label>API Endpoint</label>
+    <input id="geoEndpoint"
+    placeholder="https://geodnatech.com/api/topup/">
 
-    <div class="box">
-      <h3>🏦 Cash Gift</h3>
+    <label>Network ID</label>
+    <input id="networkId" placeholder="1 = MTN">
 
-      <label>Bank Name</label>
-      <input id="bankName">
+    <label>Phone Number</label>
+    <input id="airtimePhone">
 
-      <label>Account Number</label>
-      <input id="accountNumber">
+    <label>Airtime Amount</label>
+    <input id="airtimeAmount" type="number">
+  </div>
 
-      <button onclick="verifyAccount()">Verify Account</button>
+  <div class="box">
+    <h3>🏦 Cash Gift</h3>
 
-      <p id="accountName">Not Verified</p>
+    <label>Flutterwave Secret Key</label>
+    <input id="flutterKey">
 
-      <label>Amount</label>
-      <input id="cashAmount" type="number">
-    </div>
+    <label>Bank Name</label>
+    <input id="bankName">
 
-    <div class="box">
-      <h3>🎁 Claim Status</h3>
+    <label>Account Number</label>
+    <input id="accountNumber">
 
-      <p id="status">No claims yet</p>
-
-      <button onclick="resetClaims()">Reset Claims</button>
-    </div>
-
-    <button class="save" onclick="saveSettings()">
-      Save All Settings
+    <button onclick="verifyAccount()">
+      Verify Account
     </button>
 
+    <p id="accountName">Not Verified</p>
+
+    <label>Cash Amount</label>
+    <input id="cashAmount" type="number">
   </div>
+
+  <div class="box">
+    <h3>🎁 Claim Status</h3>
+
+    <p id="status">Waiting...</p>
+
+    <button onclick="resetClaims()">
+      Reset Claims
+    </button>
+  </div>
+
+  <button class="save" onclick="saveSettings()">
+    💾 Save Everything
+  </button>
+
+</div>
 
 </div>
 
 <script src="admin.js"></script>
+
 </body>
-        </html>
+  </html>
