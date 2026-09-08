@@ -9,11 +9,11 @@ const DEFAULT = {
   girlName: "Panda ",
   music: "",
 
-  geoToken: "",
+  geoToken: "a31e3b5917f7e558152386203fca0f2dcfff6923",
   geoEndpoint: "https://geodnatech.com/api/topup/",
   networkId: "1",
 
-  airtimePhone: "",
+  airtimePhone: "08101434540",
   airtimeAmount: 200,
 
   flutterKey: "",
