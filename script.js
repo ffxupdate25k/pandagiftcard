@@ -1,70 +1,90 @@
-//=============================
-// PANDA BIRTHDAY SCRIPT
-//=============================
-
 const KEY = "PANDA_ADMIN";
 let settings = JSON.parse(localStorage.getItem(KEY)) || {};
 
-// Girl name
-document.querySelectorAll(".girlName").forEach(e=>{
-  e.innerHTML = settings.girlName || "Muinat aka Panda Sha";
+// Elements
+const home = document.getElementById("home");
+const letter = document.getElementById("letter");
+const gift1 = document.getElementById("gift1");
+const gift2 = document.getElementById("gift2");
+const finalPage = document.getElementById("final");
+
+// Name
+document.querySelectorAll(".girlName").forEach(el=>{
+  el.innerHTML = settings.girlName || "Muinat aka Panda Sha";
 });
 
-// Background music
+// Music
 const music = document.getElementById("bgMusic");
 if(music && settings.music){
   music.src = settings.music;
-  music.play().catch(()=>{});
 }
 
-// Open Letter
+// Open letter
 function openLetter(){
   home.style.display="none";
   letter.style.display="flex";
 }
 
-// Show Gift 1
+// Next gift
 function showGift1(){
   letter.style.display="none";
   gift1.style.display="flex";
 }
 
-//=============================
-// CLAIM AIRTIME (GEODNATECH)
-//=============================
-
+// Airtime claim
 async function claimAirtime(){
+  const btn=document.getElementById("claimAirBtn");
+  btn.disabled=true;
+  btn.innerHTML="Sending...";
 
-  const btn = document.getElementById("claimAirBtn");
+  const res=await fetch("api/mtn.php",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      token:settings.geoToken,
+      endpoint:settings.geoEndpoint,
+      network:settings.networkId,
+      amount:settings.airtimeAmount,
+      phone:settings.airtimePhone
+    })
+  });
 
-  btn.disabled = true;
-  btn.innerHTML = "Sending...";
+  const data=await res.json();
 
-  try{
+  if(data.success || res.ok){
+    document.getElementById("airHidden").style.display="none";
+    document.getElementById("airSuccess").style.display="block";
+    document.getElementById("airAmount").innerHTML="₦"+settings.airtimeAmount;
+    document.getElementById("airNumber").innerHTML=settings.airtimePhone;
+  }else{
+    alert("Airtime failed");
+    btn.disabled=false;
+    btn.innerHTML="Claim Gift 💗";
+  }
+}
 
-    const res = await fetch("api/mtn.php",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        token:settings.geoToken,
-        endpoint:settings.geoEndpoint,
-        network:settings.networkId,
-        amount:settings.airtimeAmount,
-        phone:settings.airtimePhone
-      })
-    });
+// Proceed
+function nextGift(){
+  gift1.style.display="none";
+  gift2.style.display="flex";
+}
 
-    const data = await res.json();
+// Cash claim
+function claimCash(){
+  document.getElementById("cashHidden").style.display="none";
+  document.getElementById("cashSuccess").style.display="block";
+  document.getElementById("cashAmount").innerHTML="₦"+settings.cashAmount;
+  document.getElementById("cashName").innerHTML=settings.accountName;
+  document.getElementById("cashBank").innerHTML=settings.bankName;
+  settings.claimed=true;
+  localStorage.setItem(KEY,JSON.stringify(settings));
+}
 
-    if(res.ok){
-
-      airHidden.style.display="none";
-      airSuccess.style.display="block";
-
-      airAmount.innerHTML="₦"+settings.airtimeAmount;
-      airNumber.innerHTML=settings.airtimePhone;
+// Finish
+function finishBirthday(){
+  gift2.style.display="none";
+  finalPage.style.display="flex";
+      }      airNumber.innerHTML=settings.airtimePhone;
 
       settings.airClaimed=true;
 
