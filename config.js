@@ -1,0 +1,1 @@
+const CONFIG={name:'Muinat aka Panda Sha',airtimeAmount:3000,airtimePhone:'08000000000',cashAmount:10000,bankName:'YOUR BANK',accountNumber:'0000000000',accountName:'Verified Account Name',airtimeEndpoint:'/api/airtime',cashEndpoint:'/api/transfer'};
