@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Admin Panel</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div id="loginPage" class="center">
+
+  <div class="card">
+    <h1>💗 Admin Panel</h1>
+    <p>Wolf Only</p>
+
+    <input type="password" id="password" placeholder="Enter Admin Password">
+
+    <button onclick="login()">Login</button>
+  </div>
+
+</div>
+
+<div id="adminPage" style="display:none">
+
+  <header>
+    <h2>🎀 Panda Birthday Admin</h2>
+    <button onclick="logout()">Logout</button>
+  </header>
+
+  <div class="container">
+
+    <div class="box">
+      <h3>👧 Recipient</h3>
+
+      <label>Name</label>
+      <input id="girlName">
+
+      <label>Birthday Music URL</label>
+      <input id="music">
+    </div>
+
+    <div class="box">
+      <h3>📱 Airtime Gift</h3>
+
+      <label>Amount</label>
+      <input id="airtimeAmount" type="number">
+
+      <label>Phone Number</label>
+      <input id="airtimePhone">
+    </div>
+
+    <div class="box">
+      <h3>🏦 Cash Gift</h3>
+
+      <label>Bank Name</label>
+      <input id="bankName">
+
+      <label>Account Number</label>
+      <input id="accountNumber">
+
+      <button onclick="verifyAccount()">Verify Account</button>
+
+      <p id="accountName">Not Verified</p>
+
+      <label>Amount</label>
+      <input id="cashAmount" type="number">
+    </div>
+
+    <div class="box">
+      <h3>🎁 Claim Status</h3>
+
+      <p id="status">No claims yet</p>
+
+      <button onclick="resetClaims()">Reset Claims</button>
+    </div>
+
+    <button class="save" onclick="saveSettings()">
+      Save All Settings
+    </button>
+
+  </div>
+
+</div>
+
+<script src="admin.js"></script>
+</body>
+        </html>
